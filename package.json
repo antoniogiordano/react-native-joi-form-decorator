@@ -1,10 +1,10 @@
 {
-	"name": "react-attire",
-	"version": "0.1.1",
+	"name": "react-attire-joi",
+	"version": "0.0.1",
 	"description": "A dress code for your React forms",
 	"main": "dist/index.js",
-	"repository": "https://github.com/gianmarcotoso/react-attire",
-	"author": "Gian Marco Toso <info@gianmarcotoso.com>",
+	"repository": "https://github.com/antoniogiordano/react-attire",
+	"author": "Antonio Giordano <antoniogiordano@getapper.com>",
 	"license": "MIT",
 	"private": false,
 	"jest": {
