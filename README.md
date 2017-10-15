@@ -1,40 +1,47 @@
-[![Build Status](https://travis-ci.org/gianmarcotoso/react-attire.svg?branch=master)](https://travis-ci.org/gianmarcotoso/react-attire)
-[![npm version](https://badge.fury.io/js/react-attire.svg)](https://badge.fury.io/js/react-attire)
+[![Build Status](https://travis-ci.org/antoniogiordano/react-attire.svg?branch=master)](https://travis-ci.org/antoniogiordano/react-attire)
+[![npm version](https://badge.fury.io/js/react-attire-joi.svg)](https://badge.fury.io/js/react-attire-joi)
 
-# Attire
+# Attire Joi
 
 A dress code for your React forms. 
 
-This package contains a component and some utility functions that should make your life easier when dealing with forms with ReactJS. It has no hard dependencies but does obviously require React to work.
+This package is a fork of [React Attire](https://github.com/gianmarcotoso/react-attire), offering more an automatic joi validation.
+ 
+Please refer to that repo for Attire, transform, and reset functionalities.
 
 ## Installation
 
 ```
-npm install --save react-attire
+npm install --save react-attire-joi
 ```
 
 ## How does it work?
 
-The `Attire` component uses a [render prop](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce) to keep track of a form's internal state, providing both the current value of each form element and a callback to change it. 
+The `AttireJoi` component now includes a `joiObject` extra prop which represents the Joi validation object.  
+The render method adds at the end of data, onChange and reset parameters list, a `validations` object decorated with a `isValid` flag and detailed data object, where each key of this object is a form input name, and the value is a `state` and `error` parameters. 
 
 ### Basic Usage
 
-Attire works by hiding the form's state management behind the `Attire` component's implementation. You just need to provide the `name`, `value` and `onChange` props for each or your inputs. 
 
 Here's a simple example:
 
 ```
 import React from 'react'
-import { Attire } from 'react-attire'
+import { AttireJoi, validationStates } from 'react-attire-joi'
+import Joi from 'joi-browser'
 
 class MyForm extends React.Component {
     render() {
         return (
-            <Attire>
-                {(data, onChange) => (
+            <AttireJoi initial={{name: 'Frankie Frankson'}} joiObject={Joi.object().keys({name: Joi.string().min(5).required()})}>
+                {(data, onChange, reset, validations) => (
                     <div>
                         <label>Your name:</label>
                         <input type="text" name="name" value={data.name} onChange={onChange} />
+                        {
+                            validations.data.name.state === validationStates.WRONG && <label>{validations.data.name.error}</label>
+                        }
+                        <button type="submit" disabled={!validations.isValid}>Submit</button<
                     </div>
                 )}
             </Attire>
@@ -42,228 +49,10 @@ class MyForm extends React.Component {
     }
 }
 ```
-
-### Custom form inputs
-
-There are cases when you won't use regular `input`s, but some other, more exotic controls (think of a custom datepicker, for example). In these cases, you can call Attire's `onChange` callback by explicitly passing both the name and the new value:
-
-```
-import React from 'react'
-import { Attire } from 'react-attire'
-import { DatePicker } from 'some-datepicker-component'
-
-class MyForm extends React.Component {
-    render() {
-        return (
-            <Attire>
-                {(data, onChange) => (
-                    <div>
-                        <label>Your birthday:</label>
-                        <DatePicker currentDate={data.birthday} onChange={date => onChange('birthday', date)} />
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-This approch also works well when you want to handle subforms that are rendered within their own component and use a callback to notify the parent form of a change in their data, as the second parameter passed to the `onChange` callback can be of _any_ type (Attire doesn't make any assumption).
-
-> 🎓 **Did you know?**
-> 
-> Yes, you can probably use inline functions, [the world is not going to explode](https://cdb.reacttraining.com/react-inline-functions-and-performance-bdff784f5578).
-
-### Setting the initial state
-
-As with most forms, you'll probably want to initialize it with some values. You can do so by passing an `initial` prop to the `Attire` component:
-
-```
-import React from 'react'
-import { Attire } from 'react-attire'
-
-class MyForm extends React.Component {
-    render() {
-        return (
-            <Attire initial={{name: 'Frankie Frankson'}}>
-                {(data, onChange) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-### Global change notification
-
-If you want to call a function every time something changes in your form, regardless of which field, you can pass a callback to the `onChange` prop of the `Attire` component. This is **not** the same as the `onChange` callback passed to your render prop! (I might want to change the name of either one at some point, if you have suggestions open an issue):
-
-```
-import React from 'react'
-import { Attire } from 'react-attire'
-
-class MyForm extends React.Component {
-    render() {
-        return (
-            <Attire onChange={data => console.log('I sense a disturbance in the Force...', data)}>
-                {(data, onChange) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-### Resetting the state
-
-Let's say you want to include a reset button to clear your form. How would you go about clearing a state that is outside of your control? `Attire` provides a third argument to your render prop, a `reset` function you can call to reset the form to its initial state. Calling this function will also trigger the global `onChange` callback if present.
-
-```
-import React from 'react'
-import { Attire } from 'react-attire'
-
-class MyForm extends React.Component {
-    render() {
-        return (
-            <Attire initial={{name: 'Frankie Frankson'}}>
-                {(data, onChange, reset) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-
-                        <button onClick={reset}>Reset my name!</button>
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-### Form Validation
-
-It's nice to include some kind of client-side validation on your form. `Attire` makes no assumption on how your data should be validated, but I've included a `validate` function that you can use to add some validation logic; if you need a more complex solution, you can of course use an external library:
-
-```
-import React from 'react'
-import { Attire, validate } from 'react-attire'
-
-const validateMyForm = validate({ name: v => v && v.length > 3 })
-
-class MyForm extends React.Component {
-    handleFormSubmit = (data) => {
-        validateMyForm(data)
-            .then(() => {
-                console.log('All good!')
-            })
-            .catch(validationStatus => {
-                console.error('Validation error', validationStatus)
-            })
-    }
-
-    render() {
-        return (
-            <Attire initial={{name: 'Frankie Frankson'}}>
-                {(data, onChange, reset) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-
-                        <button onClick={() => this.handleFormSubmit(data)}>Go!</button>
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-The function accepts an object that defines validation rules for any one of the fields of your form (you can include all of them, or just some) and your data, and returns a `Promise` which resolves when all rules are fullfilled, rejects otherwise. If it rejects, you'll get a `validationStatus` object specifying which fields have not passed validation. If you don't pass your data right away, you'll get a curried function that you'll be able to call later with your rules already set.
-
-### Form Data Transformation
-
-Much in the same spirit of validation, form data transformation can be useful whenever you want the data your user has entered to be transformed before being used. While you can do this manually, I've included a `transform` function that you can use:
-
-```
-import React from 'react'
-import { Attire, validate, transform } from 'react-attire'
-
-const validateMyForm = validate({ name: v => v && v.length > 3 })
-const transformMyForm = transform({ name: v => v && v.toLowerCase() })
-
-class MyForm extends React.Component {
-    handleFormSubmit = (data) => {
-        const transformedData = transformMyForm(data)
-
-        validateMyForm(transformedData)
-            .then(() => {
-                console.log('All good!')
-            })
-            .catch(validationStatus => {
-                console.error('Validation error', validationStatus)
-            })
-    }
-
-    render() {
-        return (
-            <Attire initial={{name: 'Frankie Frankson'}}>
-                {(data, onChange, reset) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-
-                        <button onClick={() => this.handleFormSubmit(data)}>Go!</button>
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-### "Uncontrolled input" warning
-
-If some of your input values are undefined, React will complain that your inputs are changing from being uncontrolled to being controlled. You can avoid this by simply using an initial value or by using the `||` notation:
-
-```
-<input value={data.value || ''} />
-```
-
-Since this is ugly to see, I have provided a `value` function that does this for you:
-
-```
-import React from 'react'
-import { Attire, value } from 'react-attire'
-
-class MyForm extends React.Component {
-    render() {
-        return (
-            <Attire>
-                {(data, onChange) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={value(data.name)} onChange={onChange} />
-                    </div>
-                )}
-            </Attire>
-        )
-    }
-}
-```
-
-That's about it! :)
 
 ## Contributing
 
-This was mostly a PoC I've made to see how render props fit in the "form" use case. If you see something you don't like or think that something is broken, please open an issue or better yet, make a PR!
+If you see something you don't like or think that something is broken, please open an issue or better yet, make a PR!
 
 ## License
 

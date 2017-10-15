@@ -50,7 +50,6 @@ class Attire extends React.Component {
 		}
 
     const data = { ...this.state.data, ...delta }
-    console.log(data)
     this.validator(data)
 			.then((validations) => {
         if (onChange) onChange(data)

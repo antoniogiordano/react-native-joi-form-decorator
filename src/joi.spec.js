@@ -14,9 +14,9 @@ const joiObject = Joi.object().keys({
 })
 
 describe('Joi', () => {
-  it('should show an erro label', () => {
+  it('should show no errors', () => {
 		const form = (
-			<Attire initial={{ yolo: 'swag' }} joiObject={joiObject}>
+			<Attire initial={{ yolo: 'swag swag' }} joiObject={joiObject}>
 				{(data, onChange, reset, validations) => {
           return <div>
             <input name="yolo" value={data.yolo} onChange={onChange}/>
@@ -29,9 +29,29 @@ describe('Joi', () => {
 		)
 
 		const mounted = mount(form)
-		mounted.find('input').simulate('change', { target: { name: 'yolo', value: 'yeo' } })
+    setTimeout(() => {
+      expect(mounted.find('div').find('label').length).toBe(0)
+    }, 10)
+	})
+
+  it('should show an error label', () => {
+    const form = (
+      <Attire initial={{ yolo: 'swag' }} joiObject={joiObject}>
+        {(data, onChange, reset, validations) => {
+          return <div>
+            <input name="yolo" value={data.yolo} onChange={onChange}/>
+            {
+              validations.data.yolo.state === validationStates.WRONG && <label>{validations.data.yolo.error}</label>
+            }
+          </div>
+        }}
+      </Attire>
+    )
+
+    const mounted = mount(form)
+    mounted.find('input').simulate('change', { target: { name: 'yolo', value: 'yeo' } })
     setTimeout(() => {
       expect(mounted.find('div').find('label').length).toBe(1)
     }, 10)
-	})
+  })
 })
