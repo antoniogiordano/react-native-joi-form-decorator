@@ -1,9 +1,11 @@
 import { func, object } from 'prop-types'
 import React from 'react'
+import { joiValidate, initialValidations } from './joi'
 
 class Attire extends React.Component {
 	static propTypes = {
-		initial: object,
+		initial: object.isRequired,
+    joiObject: object.isRequired,
 		onChange: func,
 		render: func
 	}
@@ -15,8 +17,14 @@ class Attire extends React.Component {
 	constructor(props) {
 		super(props)
 
+    this.validator = joiValidate(props.joiObject, Object.keys(props.initial))
+
 		this.state = {
-			data: { ...props.initial }
+			data: { ...props.initial },
+			validations: {
+				isValid: false,
+				data: initialValidations(['yolo'])
+      }
 		}
 	}
 
@@ -41,15 +49,14 @@ class Attire extends React.Component {
 			}
 		}
 
-		this.setState(state => {
-			const data = { ...state.data, ...delta }
-
-			if (onChange) {
-				onChange(data)
-			}
-
-			return { data }
-		})
+    const data = { ...this.state.data, ...delta }
+    console.log(data)
+    this.validator(data)
+			.then((validations) => {
+        if (onChange) onChange(data)
+        this.setState({ data, validations })
+			})
+			.catch(console.log)
 	}
 
 	handleFormReset = () => {
@@ -65,7 +72,7 @@ class Attire extends React.Component {
 	}
 
 	render() {
-		return this.props.children(this.state.data, this.handleFormValueChange, this.handleFormReset)
+		return this.props.children(this.state.data, this.handleFormValueChange, this.handleFormReset, this.state.validations)
 	}
 }
 

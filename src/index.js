@@ -1,4 +1,4 @@
 export { Attire } from './Attire'
-export { validate } from './validate'
+export { validationsStates } from './joi'
 export { transform } from './transform'
 export { value } from './value'
