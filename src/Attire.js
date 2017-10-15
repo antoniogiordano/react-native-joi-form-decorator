@@ -2,7 +2,7 @@ import { func, object } from 'prop-types'
 import React from 'react'
 import { joiValidate, initialValidations } from './joi'
 
-class Attire extends React.Component {
+class AttireJoi extends React.Component {
 	static propTypes = {
 		initial: object.isRequired,
     joiObject: object.isRequired,
@@ -79,4 +79,4 @@ class Attire extends React.Component {
 	}
 }
 
-export { Attire }
+export default AttireJoi

@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 import Joi from 'joi-browser'
 
-import { Attire } from './Attire'
+import Attire from './Attire'
 import { validationStates } from './joi'
 
 configure({ adapter: new Adapter() })
