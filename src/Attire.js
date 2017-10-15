@@ -23,9 +23,13 @@ class Attire extends React.Component {
 			data: { ...props.initial },
 			validations: {
 				isValid: false,
-				data: initialValidations(['yolo'])
+				data: initialValidations(Object.keys(props.initial))
       }
 		}
+	}
+
+	componentDidMount () {
+		this.handleFormValueChange()
 	}
 
 	handleFormValueChange = (...args) => {
