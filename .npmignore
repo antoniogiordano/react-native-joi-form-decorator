@@ -5,3 +5,4 @@ jestSetup.js
 yarn.lock
 webpack.config.js
 .travis.yml
+.idea
