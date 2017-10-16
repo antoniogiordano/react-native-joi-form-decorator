@@ -46,7 +46,7 @@ const joiValidate = (joiObject, data) => {
       }
       return resolve({
         isValid: !err,
-        data: validations
+        validations
       })
     })
   })
@@ -89,7 +89,7 @@ export class Validator extends Component {
 
 	handleFormValueChange = (props) => {
     joiValidate(props.joiObject, props.data)
-			.then((isValid, validations) => this.setState({ data, validations }))
+			.then(({ isValid, validations }) => this.setState({ isValid, validations }))
 			.catch(ex => {
 			  console.log(ex)
     		throw ex

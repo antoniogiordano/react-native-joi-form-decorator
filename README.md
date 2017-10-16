@@ -1,24 +1,46 @@
 [![Build Status](https://travis-ci.org/antoniogiordano/react-attire.svg?branch=master)](https://travis-ci.org/antoniogiordano/react-attire)
 [![npm version](https://badge.fury.io/js/react-attire-joi.svg)](https://badge.fury.io/js/react-attire-joi)
 
-# Attire Joi
+# React Joi Form Decorator
 
-A dress code for your React forms. 
-
-This package is a fork of [React Attire](https://github.com/gianmarcotoso/react-attire), offering more an automatic joi validation.
- 
-Please refer to that repo for Attire, transform, and reset functionalities.
+A decorator for your forms validated through Joi from Hapi.js.
+Build you form, decorate it with React Joi Form Decorator providing a valid Joi object prop.  
 
 ## Installation
 
 ```
-npm install --save react-attire-joi
+npm install --save react-joi-form-decorator
 ```
 
 ## How does it work?
 
-The `AttireJoi` component now includes a `joiObject` extra prop which represents the Joi validation object.  
-The render method adds at the end of data, onChange and reset parameters list, a `validations` object decorated with a `isValid` flag and detailed data object, where each key of this object is a form input name, and the value is a `state` and `error` parameters. 
+Import component and `validationsStates` enum first
+
+`import Validator, { validationStates } from 'react-joi-form-decorator'`
+
+The `Validator` component takes 2 props, a `data` object and a `joiObject` which represents the Joi validation object.  
+The render method provides 2 outputs, an `isValid` flag and a `validations` data object, where each key of this object is a key from the provided `data` object, and the value is anobject with a `state` and `error` parameters.
+ 
+`state` could be one of `validationStates.CORRECT`, `validationStates.WRONG`, `validationStates.EMPTY`
+ 
+`error` is a string explaining why data is wrong (**in English! Localization is not supported yet**)
+ 
+### Browser Webpack configuration
+
+`react-joi-form-decorator` looks for a joi generic module. 
+Since joi original module is for server side purpose, you have to create an alias for browser and React Native environments.
+
+Add to your webpack.config file this:
+`resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+    modules: ['node_modules'],
+ alias: {
+    joi: 'joi-browser'
+ }`
+
+### React Native configuration
+
+`// @TODO`
 
 ### Basic Usage
 
@@ -27,22 +49,74 @@ Here's a simple example:
 
 ```
 import React from 'react'
-import { AttireJoi, validationStates } from 'react-attire-joi'
-import Joi from 'joi-browser'
+import Validator, { validationStates } from 'react-joi-form-decorator'
+import Joi from 'joi'
+
+class MyForm extends React.Component {
+    constructor (props) {
+        super (props)
+            
+        this.state = {
+            data: {
+                name: 'Frankie Frankson'
+            }
+        }
+    }
+    
+    render() {
+        const { data } = this.state
+        
+        return (
+            <Validator data={data} joiObject={Joi.object().keys({name: Joi.string().min(5).required()})}>
+                {(isValid, validations) => (
+                    <div>
+                        <label>Your name:</label>
+                        <input type="text" name="name" value={data.name} onChange={() => {
+                            // an update state function
+                        }} />
+                        {
+                            validations.name.state === validationStates.WRONG && <label>{validations.name.error}</label>
+                        }
+                        <button type="submit" disabled={!isValid}>Submit</button>
+                    </div>
+                )}
+            </Validator>
+        )
+    }
+}
+```
+
+## More power!
+
+`react-joi-form-decorator` works great with [`react-attire`](https://github.com/gianmarcotoso/react-attire)! 
+
+Here's an other example:
+
+```
+import React from 'react'
+import { Attire } from 'react-attire'
+import Validator, { validationStates } from 'react-joi-form-decorator'
 
 class MyForm extends React.Component {
     render() {
         return (
-            <AttireJoi initial={{name: 'Frankie Frankson'}} joiObject={Joi.object().keys({name: Joi.string().min(5).required()})}>
-                {(data, onChange, reset, validations) => (
-                    <div>
-                        <label>Your name:</label>
-                        <input type="text" name="name" value={data.name} onChange={onChange} />
-                        {
-                            validations.data.name.state === validationStates.WRONG && <label>{validations.data.name.error}</label>
-                        }
-                        <button type="submit" disabled={!validations.isValid}>Submit</button<
-                    </div>
+            <Attire initial={{name: 'Frankie Frankson'}}>
+                {(data, onChange, reset) => (
+                    <Validator data={data} joiObject={Joi.object().keys({name: Joi.string().min(5).required()})}>
+                        {(isValid, validations) => (
+                            <div>
+                                <label>Your name:</label>
+                                <input type="text" name="name" value={data.name} onChange={() => {
+                                    // an update state function
+                                }} />
+                                {
+                                    validations.name.state === validationStates.WRONG && <label>{validations.name.error}</label>
+                                }
+                                <button onClick={reset}>Reset my name!</button>
+                                <button type="submit" disabled={!isValid}>Submit</button>
+                            </div>
+                        )}
+                    </Validator>
                 )}
             </Attire>
         )

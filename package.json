@@ -1,9 +1,9 @@
 {
-	"name": "react-attire-joi",
+	"name": "react-joi-form-decorator",
 	"version": "0.2.4",
-	"description": "A dress code for your React forms",
+	"description": "A Joi validator for decorating your React forms",
 	"main": "dist/index.js",
-	"repository": "https://github.com/antoniogiordano/react-attire",
+	"repository": "https://github.com/antoniogiordano/react-joi-form-decorator",
 	"author": "Antonio Giordano <antoniogiordano@getapper.com>",
 	"license": "MIT",
 	"private": false,
@@ -14,6 +14,7 @@
 	},
 	"scripts": {
 		"build": "NODE_ENV=production webpack -p --progress --colors",
+		"prepublishOnly": "npm run build",
 		"test": "jest"
 	},
 	"dependencies": {},

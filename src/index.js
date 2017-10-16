@@ -1,3 +1,3 @@
-import Validator, {validationsStates} from './Attire'
+import Validator, {validationsStates} from './Validator'
 export {Validator, validationsStates}
 export default Validator

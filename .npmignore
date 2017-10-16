@@ -1,1 +1,7 @@
 .babelrc
+.gitignore
+/src
+jestSetup.js
+yarn.lock
+webpack.config.js
+.travis.yml

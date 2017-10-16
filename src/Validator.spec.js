@@ -19,7 +19,7 @@ describe('Joi', () => {
 			<Validator data={data} joiObject={joiObject}>
         {(isValid, validations) => {
           return <div>
-						<input name="yolo" value={data.yolo}/>
+						<input name="yolo" value={data.yolo} onChange={() => null}/>
             {
               validations.yolo.state === validationStates.WRONG && <label>{validations.yolo.error}</label>
             }
