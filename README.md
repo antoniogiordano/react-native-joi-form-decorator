@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/antoniogiordano/react-joi-form-decorator.svg?branch=master)](https://travis-ci.org/antoniogiordano/react-attire)
-[![npm version](https://badge.fury.io/js/react-joi-form-decorator.svg)](https://badge.fury.io/js/react-attire-joi)
+[![Build Status](https://travis-ci.org/antoniogiordano/react-joi-form-decorator.svg?branch=master)](https://travis-ci.org/antoniogiordano/react-joi-form-decorator)
+[![npm version](https://badge.fury.io/js/react-joi-form-decorator.svg)](https://badge.fury.io/js/react-joi-form-decorator)
 
 # React Joi Form Decorator
 
