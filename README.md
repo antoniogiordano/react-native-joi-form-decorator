@@ -49,7 +49,7 @@ Here's a simple example:
 
 ```
 import React from 'react'
-import Validator, { validationStates } from 'react-joi-form-decorator'
+import { Validator, validationStates } from 'react-joi-form-decorator'
 import Joi from 'joi'
 
 class MyForm extends React.Component {
@@ -95,7 +95,7 @@ Here's an other example:
 ```
 import React from 'react'
 import { Attire } from 'react-attire'
-import Validator, { validationStates } from 'react-joi-form-decorator'
+import { Validator, validationStates } from 'react-joi-form-decorator'
 
 class MyForm extends React.Component {
     render() {
