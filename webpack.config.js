@@ -18,7 +18,10 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', '.json'],
-		modules: ['node_modules']
+		modules: ['node_modules'],
+    alias: {
+      joi: 'joi-browser'
+    }
 	},
 	plugins: [
 		new webpack.DefinePlugin({
@@ -29,7 +32,7 @@ module.exports = {
 	],
 	externals: {
 		react: 'react',
-    'joi-browser': 'joi-browser'
+    joi: 'joi'
 	},
 	devtool: process.env.NODE_ENV !== 'production' ? 'source-map' : ''
 }

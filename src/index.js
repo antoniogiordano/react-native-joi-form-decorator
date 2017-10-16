@@ -1,5 +1,3 @@
-import AttireJoi from './Attire'
-export { validationsStates } from './joi'
-export { transform } from './transform'
-export { value } from './value'
-export default AttireJoi
+import Validator, {validationsStates} from './Attire'
+export {Validator, validationsStates}
+export default Validator

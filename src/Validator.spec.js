@@ -4,8 +4,7 @@ import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
 import Joi from 'joi-browser'
 
-import Attire from './Attire'
-import { validationStates } from './joi'
+import { Validator, validationStates } from './Validator'
 
 configure({ adapter: new Adapter() })
 
@@ -15,37 +14,39 @@ const joiObject = Joi.object().keys({
 
 describe('Joi', () => {
   it('should show no errors', () => {
-		const form = (
-			<Attire initial={{ yolo: 'swag swag' }} joiObject={joiObject}>
-				{(data, onChange, reset, validations) => {
+    let data = {yolo: 'swag swag'}
+    const form = (
+			<Validator data={data} joiObject={joiObject}>
+        {(isValid, validations) => {
           return <div>
-            <input name="yolo" value={data.yolo} onChange={onChange}/>
+						<input name="yolo" value={data.yolo}/>
             {
-              validations.data.yolo.state === validationStates.WRONG && <label>{validations.data.yolo.error}</label>
+              validations.yolo.state === validationStates.WRONG && <label>{validations.yolo.error}</label>
             }
-          </div>
+					</div>
         }}
-			</Attire>
-		)
+			</Validator>
+    )
 
-		const mounted = mount(form)
+    const mounted = mount(form)
     setTimeout(() => {
       expect(mounted.find('div').find('label').length).toBe(0)
     }, 10)
-	})
+  })
 
   it('should show an error label', () => {
+    let data = {yolo: 'swag swag'}
     const form = (
-      <Attire initial={{ yolo: 'swag' }} joiObject={joiObject}>
-        {(data, onChange, reset, validations) => {
+			<Validator data={data} joiObject={joiObject}>
+        {(isValid, validations) => {
           return <div>
-            <input name="yolo" value={data.yolo} onChange={onChange}/>
+						<input name="yolo" value={data.yolo} onChange={() => data.yolo = ''}/>
             {
-              validations.data.yolo.state === validationStates.WRONG && <label>{validations.data.yolo.error}</label>
+              validations.yolo.state === validationStates.WRONG && <label>{validations.yolo.error}</label>
             }
-          </div>
+					</div>
         }}
-      </Attire>
+			</Validator>
     )
 
     const mounted = mount(form)
