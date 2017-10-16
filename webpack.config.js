@@ -32,7 +32,7 @@ module.exports = {
 	],
 	externals: {
 		react: 'react',
-    joi: 'joi'
+    'joi-browser': 'joi-browser'
 	},
 	devtool: process.env.NODE_ENV !== 'production' ? 'source-map' : ''
 }
