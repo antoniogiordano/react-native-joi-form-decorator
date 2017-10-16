@@ -16,7 +16,7 @@ npm install --save react-joi-form-decorator
 
 Import component and `validationsStates` enum first
 
-`import Validator, { validationStates } from 'react-joi-form-decorator'`
+`import { Validator, validationStates } from 'react-joi-form-decorator'`
 
 The `Validator` component takes 2 props, a `data` object and a `joiObject` which represents the Joi validation object.  
 The render method provides 2 outputs, an `isValid` flag and a `validations` data object, where each key of this object is a key from the provided `data` object, and the value is anobject with a `state` and `error` parameters.
