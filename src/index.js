@@ -1,3 +1,1 @@
-import Validator, {validationsStates} from './Validator'
-export {Validator, validationsStates}
-export default Validator
+export {Validator, validationStates} from './Validator'
