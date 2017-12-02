@@ -2,7 +2,7 @@ import { configure } from 'enzyme'
 import { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import React from 'react'
-import Joi from 'joi-browser'
+import Joi from 'joi'
 
 import { Validator, validationStates } from './Validator'
 

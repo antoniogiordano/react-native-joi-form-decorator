@@ -9,8 +9,7 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'dist'),
 		filename: 'index.js',
-
-		library: 'react-attire',
+		library: 'react-native-joi-form-decorator',
 		libraryTarget: 'umd'
 	},
 	module: {
@@ -20,7 +19,7 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.json'],
 		modules: ['node_modules'],
     alias: {
-      joi: 'joi-browser'
+      joi: 'react-native-joi'
     }
 	},
 	plugins: [
@@ -32,7 +31,7 @@ module.exports = {
 	],
 	externals: {
 		react: 'react',
-    'joi-browser': 'joi-browser'
+    'react-native-joi': 'react-native-joi'
 	},
 	devtool: process.env.NODE_ENV !== 'production' ? 'source-map' : ''
 }

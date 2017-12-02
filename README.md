@@ -1,15 +1,15 @@
 [![Build Status](https://travis-ci.org/antoniogiordano/react-joi-form-decorator.svg?branch=master)](https://travis-ci.org/antoniogiordano/react-joi-form-decorator)
 [![npm version](https://badge.fury.io/js/react-joi-form-decorator.svg)](https://badge.fury.io/js/react-joi-form-decorator)
 
-# React Joi Form Decorator
+# React Native Joi Form Decorator
 
 A decorator for your forms validated through Joi from Hapi.js.
-Build you form, decorate it with React Joi Form Decorator providing a valid Joi object prop.  
+Build you form, decorate it with React Native Joi Form Decorator providing a valid Joi object prop.  
 
 ## Installation
 
 ```
-npm install --save react-joi-form-decorator
+npm install --save react-native-joi-form-decorator
 ```
 
 ## How does it work?
@@ -24,23 +24,18 @@ The render method provides 2 outputs, an `isValid` flag and a `validations` data
 `state` could be one of `validationStates.CORRECT`, `validationStates.WRONG`, `validationStates.EMPTY`
  
 `error` is a string explaining why data is wrong (**in English! Localization is not supported yet**)
- 
-### Browser Webpack configuration
-
-`react-joi-form-decorator` looks for a joi generic module. 
-Since joi original module is for server side purpose, you have to create an alias for browser and React Native environments.
-
-Add to your webpack.config file this:
-`resolve: {
-    extensions: ['.js', '.jsx', '.json'],
-    modules: ['node_modules'],
- alias: {
-    joi: 'joi-browser'
- }`
 
 ### React Native configuration
 
-`// @TODO`
+You should install react-native-joi since it is used as an external dependency
+
+```
+npm install --save react-native-joi
+```
+ 
+### Browser configuration
+
+Please refer to [`react-joi-form-decorator`](https://github.com/antoniogiordano/react-joi-form-decorator)
 
 ### Basic Usage
 
