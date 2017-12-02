@@ -1,6 +1,6 @@
 {
 	"name": "react-native-joi-form-decorator",
-	"version": "0.3.4",
+	"version": "0.3.5",
 	"description": "A Joi validator for decorating your React Native forms",
 	"main": "dist/index.js",
 	"repository": "https://github.com/antoniogiordano/react-native-joi-form-decorator",
